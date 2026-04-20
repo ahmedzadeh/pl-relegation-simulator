@@ -815,12 +815,18 @@
         .info-toggle {
             display: flex;
             align-items: center;
+            justify-content: flex-start;
             gap: 12px;
             cursor: pointer;
             color: rgba(255, 255, 255, 0.9);
             font-weight: 600;
             transition: all 0.3s ease;
             font-size: 1.05rem;
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 0;
+            text-align: left;
         }
 
         .info-toggle:hover {
@@ -1032,10 +1038,17 @@
         </div>
 
         <div class="info-section">
-            <div class="info-toggle" onclick="toggleInfo()">
-                <div class="info-icon">i</div>
+            <button
+                type="button"
+                class="info-toggle"
+                id="infoToggle"
+                onclick="toggleInfo()"
+                aria-expanded="false"
+                aria-controls="infoContent"
+            >
+                <div class="info-icon" aria-hidden="true">i</div>
                 <span>Tiebreaker Rules</span>
-            </div>
+            </button>
             <div class="info-content" id="infoContent">
                 <p>If Premier League teams are level on points, the order of tiebreakers to determine league position is:</p>
                 <ol>
@@ -1077,22 +1090,22 @@
 
     <!-- Score Input Modal -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeScoreModal()"></div>
-    <div class="score-modal" id="scoreModal">
+    <div class="score-modal" id="scoreModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <h3 class="modal-title" id="modalTitle">Enter Match Score</h3>
         <div class="score-inputs">
             <div class="score-input-group">
                 <label id="homeLabel">Home</label>
-                <input type="number" class="score-input" id="homeScore" min="0" max="99" value="0">
+                <input type="number" class="score-input" id="homeScore" min="0" max="99" step="1" inputmode="numeric" value="0">
             </div>
             <div style="color: #ffffff; font-size: 2rem;">-</div>
             <div class="score-input-group">
                 <label id="awayLabel">Away</label>
-                <input type="number" class="score-input" id="awayScore" min="0" max="99" value="0">
+                <input type="number" class="score-input" id="awayScore" min="0" max="99" step="1" inputmode="numeric" value="0">
             </div>
         </div>
         <div class="modal-buttons">
-            <button class="modal-button save" onclick="saveScore()">Save Score</button>
-            <button class="modal-button cancel" onclick="closeScoreModal()">Cancel</button>
+            <button type="button" class="modal-button save" onclick="saveScore()">Save Score</button>
+            <button type="button" class="modal-button cancel" onclick="closeScoreModal()">Cancel</button>
         </div>
     </div>
 
@@ -1236,7 +1249,9 @@
 
         function toggleInfo() {
             const infoContent = document.getElementById('infoContent');
+            const infoToggle = document.getElementById('infoToggle');
             infoContent.classList.toggle('active');
+            infoToggle.setAttribute('aria-expanded', infoContent.classList.contains('active'));
         }
 
         function showMatchday(matchday, clickedTab = null) {
@@ -1334,7 +1349,16 @@
                     
                     // Only add click handler if not played
                     if (!isPlayed) {
+                        fixtureCell.tabIndex = 0;
+                        fixtureCell.setAttribute('role', 'button');
+                        fixtureCell.setAttribute('aria-label', `${team.name} vs ${fixture}. Press Enter or Space to set result.`);
                         fixtureCell.addEventListener('click', (e) => handleClick(e, team.name, index, fixture));
+                        fixtureCell.addEventListener('keydown', (e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                handleClick(e, team.name, index, fixture);
+                            }
+                        });
                     }
                     
                     td.appendChild(fixtureCell);
@@ -1420,8 +1444,8 @@
             if (!currentModalData) return;
             
             const { teamName, matchIndex, opponent } = currentModalData;
-            const homeScore = parseInt(document.getElementById('homeScore').value) || 0;
-            const awayScore = parseInt(document.getElementById('awayScore').value) || 0;
+            const homeScore = Math.min(99, Math.max(0, parseInt(document.getElementById('homeScore').value) || 0));
+            const awayScore = Math.min(99, Math.max(0, parseInt(document.getElementById('awayScore').value) || 0));
             
             // Determine result
             let result;
