@@ -1,38 +1,35 @@
-# Premier League Relegation Tracker ⚽
+# Premier League Relegation Tracker
 
-An interactive web application to simulate and track the Premier League relegation battle for positions 15-18.
+An interactive single-file web app for tracking and simulating the Premier League relegation battle around positions 15-18.
 
-## 🌟 Features
+## Open It
 
-- **Two Modes**: Standard (W/D/L) and Advanced (exact scores)
-- **Real-time Updates**: See how each result affects the table
-- **Goal Difference Tracking**: Advanced tiebreaker calculations
-- **Head-to-Head Logic**: Linked matches update automatically
-- **Beautiful UI**: Dark mode with smooth animations
-- **Mobile Responsive**: Works on all devices
+The tracker has no build step and no dependencies.
 
-## 📸 Screenshots
+1. Open `index.html` in a browser.
+2. If GitHub Pages is enabled for this repository, use: https://ahmedzadeh.github.io/pl-relegation-simulator/
 
-![Screenshot](screenshot.png)
+## Latest Result Added
 
-## 🛠️ Technologies Used
+- Crystal Palace 0-0 West Ham
 
-- HTML5
-- CSS3 (with animations)
+## Features
+
+- Standard mode for quick W/D/L predictions
+- Advanced mode for exact scores and goal difference
+- Live standings that update as results change
+- Fixed played results so real matches stay locked
+- Responsive layout for desktop and mobile
+
+## How To Use
+
+1. Pick a matchday.
+2. Use Standard mode to cycle a fixture through win, draw, and loss.
+3. Use Advanced mode to enter exact scores.
+4. Check the live standings panel for the updated table.
+
+## Tech
+
+- HTML
+- CSS
 - Vanilla JavaScript
-- No external dependencies
-
-## 💡 How to Use
-
-1. Choose between Standard or Advanced mode
-2. Click on fixtures to set results
-3. Watch the live standings update automatically
-4. In Advanced mode, enter exact scores for goal difference calculations
-
-## 🤝 Contributing
-
-Feel free to fork this project and submit pull requests for improvements!
-
-## ⭐ Support
-
-If you find this useful, please give it a star!
